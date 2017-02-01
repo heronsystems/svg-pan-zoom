@@ -1,53 +1,134 @@
 {
-  "name": "svg-pan-zoom",
-  "version": "3.4.1",
-  "main": "dist/svg-pan-zoom.js",
-  "types": "dist/svg-pan-zoom.d.ts",
+  "_args": [
+    [
+      {
+        "raw": "svg-pan-zoom@^3.4.0",
+        "scope": null,
+        "escapedName": "svg-pan-zoom",
+        "name": "svg-pan-zoom",
+        "rawSpec": "^3.4.0",
+        "spec": ">=3.4.0 <4.0.0",
+        "type": "range"
+      },
+      "/Users/wambach/_code/lassie-mobile/html"
+    ]
+  ],
+  "_from": "svg-pan-zoom@>=3.4.0 <4.0.0",
+  "_id": "svg-pan-zoom@3.4.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/svg-pan-zoom",
+  "_nodeVersion": "6.7.0",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/svg-pan-zoom-3.4.0.tgz_1479766520172_0.09046120545826852"
+  },
+  "_npmUser": {
+    "name": "bumbu",
+    "email": "bmbalex@gmail.com"
+  },
+  "_npmVersion": "3.10.7",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "svg-pan-zoom@^3.4.0",
+    "scope": null,
+    "escapedName": "svg-pan-zoom",
+    "name": "svg-pan-zoom",
+    "rawSpec": "^3.4.0",
+    "spec": ">=3.4.0 <4.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/svg-pan-zoom/-/svg-pan-zoom-3.4.0.tgz",
+  "_shasum": "aea5c9743350c692a7d2d6a8d4ce96a57bdf10d4",
+  "_shrinkwrap": null,
+  "_spec": "svg-pan-zoom@^3.4.0",
+  "_where": "/Users/wambach/_code/lassie-mobile/html",
   "browser": "src/browserify.js",
-  "license": "BSD-2-Clause",
-  "description": "JavaScript library for panning and zooming an SVG image from the mouse, touches and programmatically.",
-  "scripts": {
-    "start": "gulp",
-    "test": "gulp test",
-    "build": "gulp build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ariutta/svg-pan-zoom"
-  },
   "bugs": {
     "url": "https://github.com/ariutta/svg-pan-zoom/issues"
   },
   "contributors": [
-    "Andrea Leofreddi <a.leofreddi@itcharm.com>",
-    "Anders Riutta <git@andersriutta.com>",
-    "Zeng Xiaohui",
-    "Barry Coughlan (https://github.com/bcoughlan)",
-    "Risingson",
-    "bumbu alex (http://bumbu.me>)",
-    "Alexander Pico <apico@gladstone.ucsf.edu>",
-    "Kyran Burraston (http://kyranburraston.co.uk)",
-    "Risingson (https://github.com/Risingson)",
-    "Siddhanathan Shanmugam <siddhanathan+social@gmail.com>",
-    "Karina Simard (https://github.com/ksimard)",
-    "Christopher Clark <chris.clark@sparkfun.com>",
-    "Vladimir Prus (http://vladimirprus.com)",
-    "Barry Coughlan (https://github.com/bcoughlan)",
-    "Ionică Bizău (http://ionicabizau.net/)",
-    "Ciprian Placintă (https://github.com/CiprianPlacinta)",
-    "Riccardo Santoro (https://github.com/VeNoMiS)",
-    "César Vidril (https://github.com/Yimiprod)"
+    {
+      "name": "Andrea Leofreddi",
+      "email": "a.leofreddi@itcharm.com"
+    },
+    {
+      "name": "Anders Riutta",
+      "email": "git@andersriutta.com"
+    },
+    {
+      "name": "Zeng Xiaohui"
+    },
+    {
+      "name": "Barry Coughlan",
+      "url": "https://github.com/bcoughlan"
+    },
+    {
+      "name": "Risingson"
+    },
+    {
+      "name": "bumbu alex",
+      "url": "http://bumbu.me>"
+    },
+    {
+      "name": "Alexander Pico",
+      "email": "apico@gladstone.ucsf.edu"
+    },
+    {
+      "name": "Kyran Burraston",
+      "url": "http://kyranburraston.co.uk"
+    },
+    {
+      "name": "Risingson",
+      "url": "https://github.com/Risingson"
+    },
+    {
+      "name": "Siddhanathan Shanmugam",
+      "email": "siddhanathan+social@gmail.com"
+    },
+    {
+      "name": "Karina Simard",
+      "url": "https://github.com/ksimard"
+    },
+    {
+      "name": "Christopher Clark",
+      "email": "chris.clark@sparkfun.com"
+    },
+    {
+      "name": "Vladimir Prus",
+      "url": "http://vladimirprus.com"
+    },
+    {
+      "name": "Barry Coughlan",
+      "url": "https://github.com/bcoughlan"
+    },
+    {
+      "name": "Ionică Bizău",
+      "url": "http://ionicabizau.net/"
+    },
+    {
+      "name": "Ciprian Placintă",
+      "url": "https://github.com/CiprianPlacinta"
+    },
+    {
+      "name": "Riccardo Santoro",
+      "url": "https://github.com/VeNoMiS"
+    },
+    {
+      "name": "César Vidril",
+      "url": "https://github.com/Yimiprod"
+    }
   ],
-  "keywords": [
-    "svg",
-    "pan",
-    "zoom"
-  ],
+  "dependencies": {},
+  "description": "JavaScript library for panning and zooming an SVG image from the mouse, touches and programmatically.",
   "devDependencies": {
     "browserify": "^8.0.3",
     "gulp": "^3.8.10",
     "gulp-concat": "^2.4.3",
-    "gulp-config-sync": "git://github.com/bumbu/gulp-config-sync",
+    "gulp-config-sync": "git://github.com/bumbu/gulp-config-sync.git",
     "gulp-header": "^1.2.2",
     "gulp-jscs": "^1.4.0",
     "gulp-jshint": "^1.9.0",
@@ -58,5 +139,43 @@
     "gulp-watch": "^3.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0"
-  }
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "aea5c9743350c692a7d2d6a8d4ce96a57bdf10d4",
+    "tarball": "https://registry.npmjs.org/svg-pan-zoom/-/svg-pan-zoom-3.4.0.tgz"
+  },
+  "gitHead": "b831a39b39d7ee5e5fff5e9427d89cdb79c10f46",
+  "homepage": "https://github.com/ariutta/svg-pan-zoom#readme",
+  "keywords": [
+    "svg",
+    "pan",
+    "zoom"
+  ],
+  "license": "BSD-2-Clause",
+  "main": "dist/svg-pan-zoom.js",
+  "maintainers": [
+    {
+      "name": "bumbu",
+      "email": "bmbalex@gmail.com"
+    },
+    {
+      "name": "ariutta",
+      "email": "npm@andersriutta.com"
+    }
+  ],
+  "name": "svg-pan-zoom",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariutta/svg-pan-zoom.git"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "start": "gulp",
+    "test": "gulp test"
+  },
+  "types": "dist/svg-pan-zoom.d.ts",
+  "version": "3.4.0"
 }

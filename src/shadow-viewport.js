@@ -18,8 +18,8 @@ ShadowViewport.prototype.init = function(viewport, options) {
   this.options = options
 
   // State cache
-  this.originalState = {zoom: 1, x: 0, y: 0}
-  this.activeState = {zoom: 1, x: 0, y: 0}
+  this.originalState = {zoom: 1, x: 0, y: 0, rotate: 0}
+  this.activeState = {zoom: 1, x: 0, y: 0, rotate: 0}
 
   this.updateCTMCached = Utils.proxy(this.updateCTM, this)
 
@@ -31,10 +31,7 @@ ShadowViewport.prototype.init = function(viewport, options) {
   this.cacheViewBox()
 
   // Process CTM
-  var newCTM = this.processCTM()
-
-  // Update viewport CTM and cache zoom and pan
-  this.setCTM(newCTM)
+  this.processCTM()
 
   // Update CTM in this frame
   this.updateCTM()
@@ -96,8 +93,6 @@ ShadowViewport.prototype.getViewBox = function() {
 /**
  * Get initial zoom and pan values. Save them into originalState
  * Parses viewBox attribute to alter initial sizes
- *
- * @return {CTM} CTM object based on options
  */
 ShadowViewport.prototype.processCTM = function() {
   var newCTM = this.getCTM()
@@ -129,7 +124,8 @@ ShadowViewport.prototype.processCTM = function() {
   this.originalState.x = newCTM.e
   this.originalState.y = newCTM.f
 
-  return newCTM
+  // Update viewport CTM and cache zoom and pan
+  this.setCTM(newCTM);
 }
 
 /**
@@ -187,6 +183,39 @@ ShadowViewport.prototype.getPan = function() {
 }
 
 /**
+ * Get rotate
+ *
+ * @return {Float} angle
+ */
+ShadowViewport.prototype.getRotate = function() {
+  return this.activeState.rotate;
+}
+
+/**
+ * Get rotate transformation
+ *
+ * @return {Object} angle and point of rotation
+ */
+ShadowViewport.prototype.getRotateTransform = function () {
+  return {
+      angle: this.getRotate()
+    , x: this.getViewBox().width / 2
+    , y: this.getViewBox().height / 2
+  }
+}
+
+/**
+ * Set rotate
+ *
+ * @return {Float} angle
+ */
+ShadowViewport.prototype.rotate = function(angle) {
+  this.activeState.rotate = angle;
+  this.updateCTMOnNextFrame();
+}
+
+
+/**
  * Return cached viewport CTM value that can be safely modified
  *
  * @return {SVGMatrix}
@@ -195,12 +224,12 @@ ShadowViewport.prototype.getCTM = function() {
   var safeCTM = this.options.svg.createSVGMatrix()
 
   // Copy values manually as in FF they are not itterable
-  safeCTM.a = this.activeState.zoom
+  safeCTM.a = this.activeState.zoom.toFixed(6)
   safeCTM.b = 0
   safeCTM.c = 0
-  safeCTM.d = this.activeState.zoom
-  safeCTM.e = this.activeState.x
-  safeCTM.f = this.activeState.y
+  safeCTM.d = this.activeState.zoom.toFixed(6)
+  safeCTM.e = this.activeState.x.toFixed(6)
+  safeCTM.f = this.activeState.y.toFixed(6)
 
   return safeCTM
 }
@@ -318,11 +347,21 @@ ShadowViewport.prototype.updateCTMOnNextFrame = function() {
  * Update viewport CTM with cached CTM
  */
 ShadowViewport.prototype.updateCTM = function() {
+  var ctm = this.getCTM()
+  
   // Updates SVG element
-  SvgUtils.setCTM(this.viewport, this.getCTM(), this.defs)
+  SvgUtils.setCTM(this.viewport, ctm, this.defs, this.getRotateTransform())
 
   // Free the lock
   this.pendingUpdate = false
+  
+  // Free the lock
+  this.pendingUpdate = false
+  
+  // Notify about the update
+  if(this.options.onUpdatedCTM) {
+    this.options.onUpdatedCTM(ctm)
+  }
 }
 
 module.exports = function(viewport, options){
