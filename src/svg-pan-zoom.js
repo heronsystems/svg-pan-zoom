@@ -689,7 +689,7 @@ SvgPanZoom.prototype.getPublicInstance = function() {
     , disablePan: function() {that.options.panEnabled = false; return that.pi}
     , isPanEnabled: function() {return !!that.options.panEnabled}
     , pan: function(point) {that.pan(point); return that.pi}
-    , panBy: function(point) {that.panBy(point); return that.pi}
+    , panBy: function(point, userTriggered) {that.panBy(point, userTriggered); return that.pi}
     , getPan: function() {return that.getPan()}
       // Pan event
     , setBeforePan: function(fn) {that.options.beforePan = fn === null ? null : Utils.proxy(fn, that.publicInstance); return that.pi}

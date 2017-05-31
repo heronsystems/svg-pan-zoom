@@ -94,7 +94,7 @@ declare namespace SvgPanZoom {
      * @param  {Object} point {x: 0, y: 0}
      * @return {Instance}    Current instance
      */
-    panBy(point: Point): Instance;
+    panBy(point: Point, userTriggered?:Boolean): Instance;
 
     /**
      * Get pan vector
