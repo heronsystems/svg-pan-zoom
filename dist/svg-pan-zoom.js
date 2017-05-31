@@ -1119,12 +1119,12 @@ SvgPanZoom.prototype.pan = function(point) {
  *
  * @param  {Object} point {x: 0, y: 0}
  */
-SvgPanZoom.prototype.panBy = function(point) {
+SvgPanZoom.prototype.panBy = function(point, userTriggered) {
   var viewportCTM = this.viewport.getCTM()
   viewportCTM.e += point.x
   viewportCTM.f += point.y
   console.log('PanBy');
-  this.viewport.setCTM(viewportCTM)
+  this.viewport.setCTM(viewportCTM, userTriggered)
 }
 
 /**
