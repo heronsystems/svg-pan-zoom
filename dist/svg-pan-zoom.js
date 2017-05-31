@@ -519,8 +519,8 @@ ShadowViewport.prototype.updateCTM = function() {
   // Notify about the update
   if(this.options.onUpdatedCTM) {
     this.options.onUpdatedCTM(ctm, this.userTriggered)
+    this.userTriggered = null
   }
-  this.userTriggered = null;
 }
 
 module.exports = function(viewport, options){
