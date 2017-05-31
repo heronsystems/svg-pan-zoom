@@ -810,6 +810,7 @@ SvgPanZoom.prototype.zoomAtPoint = function(zoomScale, point, zoomAbsolute, user
     , newCTM = oldCTM.multiply(modifier)
 
   if (newCTM.a !== oldCTM.a) {
+    console.log('zoomAtPoint');
     this.viewport.setCTM(newCTM, userTriggered)
   }
 }
@@ -1032,7 +1033,7 @@ SvgPanZoom.prototype.handleMouseMove = function(evt) {
     var point = SvgUtils.getEventPoint(evt, this.svg).matrixTransform(this.firstEventCTM.inverse())
       , viewportCTM = this.firstEventCTM.translate(point.x - this.stateOrigin.x, point.y - this.stateOrigin.y)
 
-    console.log('handle mouse move')
+    console.log('handleMouseMove')
     this.viewport.setCTM(viewportCTM, true)
   }
 }
@@ -1108,6 +1109,7 @@ SvgPanZoom.prototype.pan = function(point) {
   var viewportCTM = this.viewport.getCTM()
   viewportCTM.e = point.x
   viewportCTM.f = point.y
+  console.log('Pan');
   this.viewport.setCTM(viewportCTM)
 }
 
@@ -1120,6 +1122,7 @@ SvgPanZoom.prototype.panBy = function(point) {
   var viewportCTM = this.viewport.getCTM()
   viewportCTM.e += point.x
   viewportCTM.f += point.y
+  console.log('PanBy');
   this.viewport.setCTM(viewportCTM)
 }
 
