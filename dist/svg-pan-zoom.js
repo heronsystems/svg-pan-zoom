@@ -394,6 +394,8 @@ ShadowViewport.prototype.userTriggered = null;
  * @param {Boolean} userTriggered Default False. Indcates if user triggered method or not
  */
 ShadowViewport.prototype.setCTM = function(newCTM, userTriggered) {
+  console.log('Set CtM: ' + userTriggered);
+
   var willZoom = this.isZoomDifferent(newCTM)
     , willPan = this.isPanDifferent(newCTM)
 
