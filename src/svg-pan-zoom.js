@@ -74,9 +74,9 @@ SvgPanZoom.prototype.init = function(svg, options) {
   , onPan: function(point) {
       if (that.viewport && that.options.onPan) {return that.options.onPan(point)}
     }
-  , onUpdatedCTM: function(ctm) {
+  , onUpdatedCTM: function(ctm, userTriggered) {
       // that.options becomes undefined here under some circumstances
-      if (that.viewport && that.options && that.options.onUpdatedCTM) {return that.options.onUpdatedCTM(ctm)}
+      if (that.viewport && that.options && that.options.onUpdatedCTM) {return that.options.onUpdatedCTM(ctm, userTriggered)}
     }
   })
 
@@ -244,8 +244,8 @@ SvgPanZoom.prototype.handleMouseWheel = function(evt) {
   var inversedScreenCTM = this.svg.getScreenCTM().inverse()
     , relativeMousePoint = SvgUtils.getEventPoint(evt, this.svg).matrixTransform(inversedScreenCTM)
     , zoom = Math.pow(1 + this.options.zoomScaleSensitivity, (-1) * delta); // multiplying by neg. 1 so as to make zoom in/out behavior match Google maps behavior
-    console.log(zoom, relativeMousePoint);
-  this.zoomAtPoint(zoom, relativeMousePoint)
+
+  this.zoomAtPoint(zoom, relativeMousePoint, false, true)
 }
 
 /**
@@ -256,7 +256,7 @@ SvgPanZoom.prototype.handleMouseWheel = function(evt) {
  * @param  {Boolean} zoomAbsolute Default false. If true, zoomScale is treated as an absolute value.
  *                                Otherwise, zoomScale is treated as a multiplied (e.g. 1.10 would zoom in 10%)
  */
-SvgPanZoom.prototype.zoomAtPoint = function(zoomScale, point, zoomAbsolute) {
+SvgPanZoom.prototype.zoomAtPoint = function(zoomScale, point, zoomAbsolute, userTriggered) {
   var originalState = this.viewport.getOriginalState()
 
   if (!zoomAbsolute) {
@@ -279,7 +279,7 @@ SvgPanZoom.prototype.zoomAtPoint = function(zoomScale, point, zoomAbsolute) {
     , newCTM = oldCTM.multiply(modifier)
 
   if (newCTM.a !== oldCTM.a) {
-    this.viewport.setCTM(newCTM)
+    this.viewport.setCTM(newCTM, userTriggered)
   }
 }
 
@@ -501,7 +501,7 @@ SvgPanZoom.prototype.handleMouseMove = function(evt) {
     var point = SvgUtils.getEventPoint(evt, this.svg).matrixTransform(this.firstEventCTM.inverse())
       , viewportCTM = this.firstEventCTM.translate(point.x - this.stateOrigin.x, point.y - this.stateOrigin.y)
 
-    this.viewport.setCTM(viewportCTM)
+    this.viewport.setCTM(viewportCTM, true)
   }
 }
 
