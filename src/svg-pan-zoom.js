@@ -337,8 +337,8 @@ SvgPanZoom.prototype.publicZoomAtPoint = function(scale, point, absolute) {
  *
  * @param {Float} angle
  */
-SvgPanZoom.prototype.rotate = function(angle) {
-  this.viewport.rotate(angle);
+SvgPanZoom.prototype.rotate = function(angle, userTriggered) {
+  this.viewport.rotate(angle, userTriggered);
 }
 
 /**
@@ -346,8 +346,8 @@ SvgPanZoom.prototype.rotate = function(angle) {
  *
  * @param {Float} relative angle
  */
-SvgPanZoom.prototype.rotateRelative = function(angle) {
-  this.rotate(this.getRotate() + angle);
+SvgPanZoom.prototype.rotateRelative = function(angle, userTriggered) {
+  this.rotate(this.getRotate() + angle, userTriggered);
 }
 
 /**
@@ -737,7 +737,7 @@ SvgPanZoom.prototype.getPublicInstance = function() {
     , getZoom: function() {return that.getRelativeZoom()}
       // Rotate
     , rotate: function(angle) {that.rotate(angle); return that.pi}
-    , rotateRelative: function(angle) {that.rotateRelative(angle); return that.pi}
+    , rotateRelative: function(angle, userTriggered) {that.rotateRelative(angle, userTriggered); return that.pi}
     , getRotate: function() {return that.getRotate()}
       // Reset
     , resetZoom: function() {that.resetZoom(); return that.pi}

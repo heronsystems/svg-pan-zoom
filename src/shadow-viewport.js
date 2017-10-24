@@ -209,8 +209,9 @@ ShadowViewport.prototype.getRotateTransform = function () {
  *
  * @return {Float} angle
  */
-ShadowViewport.prototype.rotate = function(angle) {
+ShadowViewport.prototype.rotate = function(angle, userTriggered) {
   this.activeState.rotate = angle;
+  this.userTriggered = userTriggered;
   this.updateCTMOnNextFrame();
 }
 
@@ -359,6 +360,8 @@ ShadowViewport.prototype.updateCTM = function() {
   
   // Updates SVG element
   SvgUtils.setCTM(this.viewport, ctm, this.defs, this.getRotateTransform())
+
+  
 
   // Free the lock
   this.pendingUpdate = false
