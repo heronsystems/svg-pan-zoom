@@ -329,7 +329,7 @@ SvgPanZoom.prototype.publicZoomAtPoint = function(scale, point, absolute) {
     }
   }
 
-  this.zoomAtPoint(scale, point, absolute)
+  this.zoomAtPoint(scale, point, absolute, true)
 }
 
 /**
