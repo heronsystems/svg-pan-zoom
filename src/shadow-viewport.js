@@ -209,8 +209,9 @@ ShadowViewport.prototype.getRotateTransform = function () {
  *
  * @return {Float} angle
  */
-ShadowViewport.prototype.rotate = function(angle) {
+ShadowViewport.prototype.rotate = function(angle, userTriggered) {
   this.activeState.rotate = angle;
+  this.userTriggered = userTriggered;
   this.updateCTMOnNextFrame();
 }
 
@@ -234,16 +235,24 @@ ShadowViewport.prototype.getCTM = function() {
   return safeCTM
 }
 
+
+ShadowViewport.prototype.userTriggered = null;
+
 /**
  * Set a new CTM
  *
  * @param {SVGMatrix} newCTM
+ * @param {Boolean} userTriggered Default False. Indcates if user triggered method or not
  */
-ShadowViewport.prototype.setCTM = function(newCTM) {
+ShadowViewport.prototype.setCTM = function(newCTM, userTriggered) {
   var willZoom = this.isZoomDifferent(newCTM)
     , willPan = this.isPanDifferent(newCTM)
 
   if (willZoom || willPan) {
+    if(userTriggered) {
+      this.userTriggered = true;
+    }
+
     // Before zoom
     if (willZoom) {
       // If returns false then cancel zooming
@@ -352,6 +361,8 @@ ShadowViewport.prototype.updateCTM = function() {
   // Updates SVG element
   SvgUtils.setCTM(this.viewport, ctm, this.defs, this.getRotateTransform())
 
+  
+
   // Free the lock
   this.pendingUpdate = false
   
@@ -360,7 +371,8 @@ ShadowViewport.prototype.updateCTM = function() {
   
   // Notify about the update
   if(this.options.onUpdatedCTM) {
-    this.options.onUpdatedCTM(ctm)
+    this.options.onUpdatedCTM(ctm, this.userTriggered)
+    this.userTriggered = null
   }
 }
 

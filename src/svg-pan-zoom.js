@@ -74,9 +74,9 @@ SvgPanZoom.prototype.init = function(svg, options) {
   , onPan: function(point) {
       if (that.viewport && that.options.onPan) {return that.options.onPan(point)}
     }
-  , onUpdatedCTM: function(ctm) {
+  , onUpdatedCTM: function(ctm, userTriggered) {
       // that.options becomes undefined here under some circumstances
-      if (that.viewport && that.options && that.options.onUpdatedCTM) {return that.options.onUpdatedCTM(ctm)}
+      if (that.viewport && that.options && that.options.onUpdatedCTM) {return that.options.onUpdatedCTM(ctm, userTriggered)}
     }
   })
 
@@ -244,8 +244,8 @@ SvgPanZoom.prototype.handleMouseWheel = function(evt) {
   var inversedScreenCTM = this.svg.getScreenCTM().inverse()
     , relativeMousePoint = SvgUtils.getEventPoint(evt, this.svg).matrixTransform(inversedScreenCTM)
     , zoom = Math.pow(1 + this.options.zoomScaleSensitivity, (-1) * delta); // multiplying by neg. 1 so as to make zoom in/out behavior match Google maps behavior
-    console.log(zoom, relativeMousePoint);
-  this.zoomAtPoint(zoom, relativeMousePoint)
+
+  this.zoomAtPoint(zoom, relativeMousePoint, false, true)
 }
 
 /**
@@ -256,7 +256,7 @@ SvgPanZoom.prototype.handleMouseWheel = function(evt) {
  * @param  {Boolean} zoomAbsolute Default false. If true, zoomScale is treated as an absolute value.
  *                                Otherwise, zoomScale is treated as a multiplied (e.g. 1.10 would zoom in 10%)
  */
-SvgPanZoom.prototype.zoomAtPoint = function(zoomScale, point, zoomAbsolute) {
+SvgPanZoom.prototype.zoomAtPoint = function(zoomScale, point, zoomAbsolute, userTriggered) {
   var originalState = this.viewport.getOriginalState()
 
   if (!zoomAbsolute) {
@@ -279,7 +279,7 @@ SvgPanZoom.prototype.zoomAtPoint = function(zoomScale, point, zoomAbsolute) {
     , newCTM = oldCTM.multiply(modifier)
 
   if (newCTM.a !== oldCTM.a) {
-    this.viewport.setCTM(newCTM)
+    this.viewport.setCTM(newCTM, userTriggered)
   }
 }
 
@@ -329,7 +329,7 @@ SvgPanZoom.prototype.publicZoomAtPoint = function(scale, point, absolute) {
     }
   }
 
-  this.zoomAtPoint(scale, point, absolute)
+  this.zoomAtPoint(scale, point, absolute, true)
 }
 
 /**
@@ -337,8 +337,8 @@ SvgPanZoom.prototype.publicZoomAtPoint = function(scale, point, absolute) {
  *
  * @param {Float} angle
  */
-SvgPanZoom.prototype.rotate = function(angle) {
-  this.viewport.rotate(angle);
+SvgPanZoom.prototype.rotate = function(angle, userTriggered) {
+  this.viewport.rotate(angle, userTriggered);
 }
 
 /**
@@ -346,8 +346,8 @@ SvgPanZoom.prototype.rotate = function(angle) {
  *
  * @param {Float} relative angle
  */
-SvgPanZoom.prototype.rotateRelative = function(angle) {
-  this.rotate(this.getRotate() + angle);
+SvgPanZoom.prototype.rotateRelative = function(angle, userTriggered) {
+  this.rotate(this.getRotate() + angle, userTriggered);
 }
 
 /**
@@ -501,7 +501,8 @@ SvgPanZoom.prototype.handleMouseMove = function(evt) {
     var point = SvgUtils.getEventPoint(evt, this.svg).matrixTransform(this.firstEventCTM.inverse())
       , viewportCTM = this.firstEventCTM.translate(point.x - this.stateOrigin.x, point.y - this.stateOrigin.y)
 
-    this.viewport.setCTM(viewportCTM)
+    
+    this.viewport.setCTM(viewportCTM, true)
   }
 }
 
@@ -584,11 +585,11 @@ SvgPanZoom.prototype.pan = function(point) {
  *
  * @param  {Object} point {x: 0, y: 0}
  */
-SvgPanZoom.prototype.panBy = function(point) {
+SvgPanZoom.prototype.panBy = function(point, userTriggered) {
   var viewportCTM = this.viewport.getCTM()
   viewportCTM.e += point.x
   viewportCTM.f += point.y
-  this.viewport.setCTM(viewportCTM)
+  this.viewport.setCTM(viewportCTM, userTriggered)
 }
 
 /**
@@ -687,7 +688,7 @@ SvgPanZoom.prototype.getPublicInstance = function() {
     , disablePan: function() {that.options.panEnabled = false; return that.pi}
     , isPanEnabled: function() {return !!that.options.panEnabled}
     , pan: function(point) {that.pan(point); return that.pi}
-    , panBy: function(point) {that.panBy(point); return that.pi}
+    , panBy: function(point, userTriggered) {that.panBy(point, userTriggered); return that.pi}
     , getPan: function() {return that.getPan()}
       // Pan event
     , setBeforePan: function(fn) {that.options.beforePan = fn === null ? null : Utils.proxy(fn, that.publicInstance); return that.pi}
@@ -736,7 +737,7 @@ SvgPanZoom.prototype.getPublicInstance = function() {
     , getZoom: function() {return that.getRelativeZoom()}
       // Rotate
     , rotate: function(angle) {that.rotate(angle); return that.pi}
-    , rotateRelative: function(angle) {that.rotateRelative(angle); return that.pi}
+    , rotateRelative: function(angle, userTriggered) {that.rotateRelative(angle, userTriggered); return that.pi}
     , getRotate: function() {return that.getRotate()}
       // Reset
     , resetZoom: function() {that.resetZoom(); return that.pi}
